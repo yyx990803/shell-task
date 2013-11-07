@@ -1,0 +1,12 @@
+{
+  "name": "shell-task",
+  "version": "0.0.1",
+  "description": "then-able shell task sequence",
+  "main": "task.js",
+  "keywords": [
+    "shell",
+    "cli"
+  ],
+  "author": "Evan You",
+  "license": "MIT"
+}
