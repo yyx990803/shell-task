@@ -2,8 +2,13 @@
 
 Proof-of-concept then-able shell commands in node.
 
-``` js
+### Install
+``` bash
+$ npm install shell-task
+```
 
+### Usage
+``` js
 var Task = require('shell-task')
 
 new Task('git init')
@@ -13,5 +18,4 @@ new Task('git init')
     .then('git remote add ...')
     .then('git push -u origin master')
     .run(onSuccess, onError)
-
 ```
