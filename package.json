@@ -1,7 +1,7 @@
 {
   "name": "shell-task",
   "version": "0.0.1",
-  "description": "then-able shell task sequence",
+  "description": "Proof-of-concept then-able shell commands in node.",
   "main": "task.js",
   "keywords": [
     "shell",
