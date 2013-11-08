@@ -1,6 +1,6 @@
 # shell-task
 
-Proof-of-concept then-able shell commands in node.
+Proof-of-concept then-able shell commands in node. (Although it looks like a promise, it is NOT.)
 
 ### Install
 ``` bash
