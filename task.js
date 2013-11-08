@@ -29,7 +29,11 @@ function run (task) {
     if (typeof step === 'function') {
 
         log('function: ' + step.name + '()', 32)
-        step(next)
+        try {
+            step(next)
+        } catch (e) {
+            handle(e)
+        }
 
     } else {
 
@@ -38,14 +42,14 @@ function run (task) {
             return setTimeout(next, +step.args[0])
         }
         var child = spawn(step.cmd, step.args, task.opts)
-        child.once('error', task.onError)
+        child.once('error', handle)
         child.once('exit', next)
 
     }
 
     function next (code) {
         if (typeof code === 'number' && code !== 0) {
-            task.onError(new Error('process exited with unexpected code: ' + code))
+            handle(new Error('process exited with unexpected code: ' + code))
         } else {
             if (task.queue.length) {
                 run(task)
@@ -53,6 +57,10 @@ function run (task) {
                 task.onSuccess()
             }
         }
+    }
+
+    function handle (err) {
+        task.onError(err, next)
     }
 }
 
@@ -84,7 +92,7 @@ function fail (e) {
 }
 
 function log (str, colorCode) {
-    console.log('\x1B[' + (colorCode || 36) + 'm>> ' + str + '\x1B[39m')
+    console.log('\x1B[' + (colorCode || 36) + 'm> ' + str + '\x1B[39m')
 }
 
 module.exports = Task
