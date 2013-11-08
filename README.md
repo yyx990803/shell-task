@@ -33,7 +33,10 @@ function onSuccess () {
 
 // any error or exit code other than 0 will abort task
 // and call onError with the exception
-function onError (e) {
-    throw e
+function onError (err, next) {
+    throw err
+    // or you can ignore the exception
+    // and just call next(), which will
+    // continue the flow
 }
 ```
