@@ -83,7 +83,7 @@ function isSleep (step) {
 }
 
 function ok () {
-    log('Task successfully completed.', 32)
+    log('Task completed.', 32)
 }
 
 function fail (e) {
