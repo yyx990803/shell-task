@@ -75,7 +75,7 @@ function isSleep (step) {
 }
 
 function ok () {
-    console.log('task completed.')
+    log('Task successfully completed.', 32)
 }
 
 function fail (e) {

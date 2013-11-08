@@ -1,12 +1,16 @@
 {
   "name": "shell-task",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Proof-of-concept then-able shell commands in node.",
   "main": "task.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yyx990803/shell-task.git"
+  },
   "keywords": [
     "shell",
     "cli"
   ],
-  "author": "Evan You",
+  "author": "Evan You <yyx990803@gmail.com>",
   "license": "MIT"
 }
