@@ -9,7 +9,10 @@ function Task (cmd, opts) {
 }
 
 Task.prototype.then = function (cmd) {
-    this.queue.push(splitCmd(cmd))
+    if (typeof cmd === 'string') {
+        cmd = splitCmd(cmd)
+    }
+    this.queue.push(cmd)
     return this
 }
 
@@ -22,20 +25,26 @@ Task.prototype.run = function (onSuccess, onError) {
 function run (task) {
 
     var step  = task.queue.shift()
-    console.log('\x1B[32m' + step.raw + '\x1B[39m')
 
-    if (isSleep(step)) {
-        return setTimeout(function () {
-            next(0)
-        }, +step.args[0])
+    if (typeof step === 'function') {
+
+        log('function: ' + step.name + '()', 32)
+        step(next)
+
+    } else {
+
+        log(step.raw)
+        if (isSleep(step)) {
+            return setTimeout(next, +step.args[0])
+        }
+        var child = spawn(step.cmd, step.args, task.opts)
+        child.once('error', task.onError)
+        child.once('exit', next)
+
     }
 
-    var child = spawn(step.cmd, step.args, task.opts)
-    child.once('error', task.onError)
-    child.once('exit', next)
-
     function next (code) {
-        if (code !== 0) {
+        if (typeof code === 'number' && code !== 0) {
             task.onError(new Error('process exited with unexpected code: ' + code))
         } else {
             if (task.queue.length) {
@@ -70,7 +79,12 @@ function ok () {
 }
 
 function fail (e) {
-    throw e
+    log('Task failed.', 31)
+    log(e.toString(), 31)
+}
+
+function log (str, colorCode) {
+    console.log('\x1B[' + (colorCode || 36) + 'm>> ' + str + '\x1B[39m')
 }
 
 module.exports = Task

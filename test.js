@@ -2,16 +2,13 @@ var Task = require('./task')
 
 new Task('git init')
     .then('sleep 1000')
+    .then(doSomething)
     .then('git add .')
     .then('git commit -m "testing this cool stuff"')
-    .then('git push')
-    .run(done, fail)
+    .then('git push origin 123')
+    .run()
 
-function done () {
-    console.log('DONE')
-}
-
-// by default it will throw so this is optional
-function fail (e) {
-    console.log(e)
+function doSomething (next) {
+    console.log('doing something...')
+    setTimeout(next, 1000)
 }
