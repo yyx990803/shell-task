@@ -1,6 +1,6 @@
 {
   "name": "shell-task",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Proof-of-concept then-able shell commands in node.",
   "main": "task.js",
   "repository": {
