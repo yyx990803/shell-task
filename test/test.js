@@ -1,4 +1,4 @@
-var Task = require('./task')
+var Task = require('../task')
 
 new Task('echo "lets go"')
   .then('sleep 1000')
