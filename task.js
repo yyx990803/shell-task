@@ -1,4 +1,5 @@
 var spawn = require('child_process').spawn
+var path = require('path')
 
 /**
  * Task constructor.
@@ -11,7 +12,8 @@ var spawn = require('child_process').spawn
 
 function Task (cmd, opts) {
   this.opts = opts || {
-    stdio: 'inherit'
+    stdio: 'inherit',
+    cwd: process.cwd()
   }
   this.queue = []
   this.then(cmd)
@@ -62,6 +64,10 @@ function run (task) {
     log(step.raw)
     if (isSleep(step)) {
       return setTimeout(next, +step.args[0])
+    }
+    if(isCd(step)) {
+      task.opts.cwd = path.resolve(task.opts.cwd, step.args[0] === '~' ? process.env.HOME : step.args[0])
+      return next()
     }
     var child = spawn(step.cmd, step.args, task.opts)
     child.once('error', handle)
@@ -139,6 +145,18 @@ function processArg (str) {
 function isSleep (step) {
   return step.cmd === 'sleep' &&
     step.args[0] == +step.args[0]
+}
+
+/**
+ * Check if the command is a cd command...
+ * If yes we just change cwd of the process.
+ *
+ * @param {Object} step
+ * @return {Boolean}
+ */
+
+function isCd (step) {
+  return step.cmd === 'cd';
 }
 
 /**
